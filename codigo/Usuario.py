@@ -49,7 +49,6 @@ class Usuario ():
   def get_senha(self):
     return self.senha
 
-  
   def set_cpf(self, cpf):
     self.cpf = cpf
 
