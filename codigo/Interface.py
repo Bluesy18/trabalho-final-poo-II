@@ -95,7 +95,7 @@ class App:
         self.limpar_tela()
 
         tk.Label(self.root, text=f"Usuário {username} autenticado com sucesso!").pack(pady=20)
-        tk.Button(self.root, text="Sair", command=self.tela_inicial).pack(pady=10)
+        tk.Button(self.root, text="Sair", command=self.alugar).pack(pady=10)
 
     def tela_inicial(self):
         self.limpar_tela()
@@ -104,6 +104,12 @@ class App:
     def limpar_tela(self):
         for widget in self.root.winfo_children():
             widget.destroy()
+
+    def alugar(self):
+        self.limpar_tela()
+        tk.Label(self.root, text=f"Bem vindo ao sistema de aluguel").pack(pady=20)
+        
+
 
 # Configuração inicial do Tkinter
 if __name__ == "__main__":

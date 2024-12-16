@@ -17,8 +17,16 @@ class Rent:
             response.raise_for_status()
             data = response.json()
 
-            filtered_data = data["Title"]["Year"]["Genre"]
-            return filtered_data
+            if data.get("Response") == "True":  
+                filtered_data = {
+                    "Title": data["Title"],
+                    "Year": data["Year"],
+                    "Genre": data["Genre"]
+                }
+                return filtered_data
+            else:
+                return {"error": data.get("Error", "Filme não encontrado.")}
+
         
         except requests.exceptions.RequestException as e:
             return {"error": str(e)}
