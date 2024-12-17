@@ -1,4 +1,5 @@
 import requests
+import random
 
 
 
@@ -6,6 +7,7 @@ class Rent:
     base_url = "http://www.omdbapi.com/?"
     api_key = "13e83016"
 
+    @staticmethod
     def rent_movie(name):
         params = {
             "apikey": Rent.api_key,
@@ -21,7 +23,8 @@ class Rent:
                 filtered_data = {
                     "Title": data["Title"],
                     "Year": data["Year"],
-                    "Genre": data["Genre"]
+                    "Genre": data["Genre"],
+                    "PricePerDay": 15
                 }
                 return filtered_data
             else:
