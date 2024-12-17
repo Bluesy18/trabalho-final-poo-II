@@ -1,6 +1,6 @@
 # trabalho-final-poo-II
 
-´´´
+```mermaid
 classDiagram
     class User {
         +username: str
@@ -37,4 +37,5 @@ classDiagram
     RentStorage -- User: 0..*
     LoginStorage -- User: 0..*
     User o-- Rent: 0..*
-    ´´´
+
+```
