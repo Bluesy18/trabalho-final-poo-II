@@ -1,11 +1,9 @@
-import json
 from datetime import datetime
 import tkinter as tk
 from tkinter import messagebox
-import random
 
 from Usuario import Usuario
-from Login import LoginStorage, RentStorage
+from Armazenamento import LoginStorage, RentStorage
 from Aluguel import Rent
 
 class App:
@@ -185,7 +183,3 @@ class App:
 
 
 # Configuração inicial do Tkinter
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = App(root)
-    root.mainloop()
