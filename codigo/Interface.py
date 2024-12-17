@@ -2,7 +2,7 @@ from datetime import datetime
 import tkinter as tk
 from tkinter import messagebox
 
-from Usuario import Usuario
+from Usuario import User
 from Armazenamento import LoginStorage, RentStorage
 from Aluguel import Rent
 
@@ -68,7 +68,7 @@ class App:
             messagebox.showerror("Erro", "Nome de usuário já cadastrado.")
             return
 
-        novo_usuario = Usuario(username, password)
+        novo_usuario = User(username, password)
         usuarios[username] = novo_usuario.to_dict()
 
         self.login_storage.save_login(usuarios)
