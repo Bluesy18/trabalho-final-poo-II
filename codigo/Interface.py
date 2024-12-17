@@ -13,7 +13,7 @@ class App:
         self.login_storage = LoginStorage()
         self.rent_storage = RentStorage()
 
-        # Tela inicial
+        
         tk.Label(root, text="Bem-vindo! Escolha uma opção:").pack(pady=10)
 
         self.register_button = tk.Button(root, text="Cadastrar", command=self.tela_cadastro)
@@ -182,4 +182,4 @@ class App:
             widget.destroy()
 
 
-# Configuração inicial do Tkinter
+
