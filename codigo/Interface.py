@@ -100,6 +100,8 @@ class App:
         tk.Label(self.root, text=f"Usuário {username} autenticado com sucesso!").pack(pady=20)
         tk.Button(self.root, text="Alugar Filme", command=lambda: self.alugar(username)).pack(pady=10)
         tk.Button(self.root, text="Ver Meus Aluguéis", command=lambda: self.visualizar_alugueis(username)).pack(pady=10)
+        tk.Button(self.root, text="Logout", command=lambda: self.tela_inicial()).pack(pady=10)
+
 
     def alugar(self, username):
         self.limpar_tela()
