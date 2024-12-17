@@ -12,5 +12,13 @@
             "dias": 0,
             "total": 0.0
         }
+    ],
+    "davi": [
+        {
+            "filme": "Joker",
+            "data": "2024-12-16",
+            "dias": 12,
+            "total": 180
+        }
     ]
 }

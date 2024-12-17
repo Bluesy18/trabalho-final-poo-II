@@ -1,7 +1,4 @@
 import requests
-import random
-
-
 
 class Rent:
     base_url = "http://www.omdbapi.com/?"

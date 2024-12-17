@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 class Storage:
     def save_data(self, filename, data):
