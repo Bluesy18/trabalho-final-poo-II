@@ -21,12 +21,12 @@ class Rent:
                     "Title": data["Title"],
                     "Year": data["Year"],
                     "Genre": data["Genre"],
-                    "PricePerDay": 15
+                    "PricePerDay": 15,
+                    "Poster": data.get("Poster", "N/A")
                 }
                 return filtered_data
             else:
                 return {"error": data.get("Error", "Filme não encontrado.")}
 
-        
         except requests.exceptions.RequestException as e:
             return {"error": str(e)}

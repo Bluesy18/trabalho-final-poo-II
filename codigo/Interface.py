@@ -1,7 +1,9 @@
 from datetime import datetime
 import tkinter as tk
 from tkinter import messagebox
-
+from PIL import Image, ImageTk
+import requests
+from io import BytesIO
 from Usuario import User
 from Armazenamento import LoginStorage, RentStorage
 from Aluguel import Rent
@@ -128,6 +130,25 @@ class App:
         tk.Label(self.root, text=f"Gênero: {filme['Genre']}").pack(pady=5)
         tk.Label(self.root, text=f"Preço por dia: R${filme['PricePerDay']}").pack(pady=5)
 
+        # Exibir o pôster do filme
+        poster_url = filme.get("Poster")
+        if poster_url and poster_url != "N/A":
+            try:
+                response = requests.get(poster_url)
+                response.raise_for_status()
+                poster_data = BytesIO(response.content)
+                image = Image.open(poster_data)
+                image = image.resize((200, 300))  # Redimensionar o pôster para 200x300 pixels
+                poster_img = ImageTk.PhotoImage(image)
+
+                poster_label = tk.Label(self.root, image=poster_img)
+                poster_label.image = poster_img  # Armazenar a referência para evitar garbage collection
+                poster_label.pack(pady=10)
+            except Exception as e:
+                tk.Label(self.root, text="Pôster indisponível.").pack(pady=10)
+        else:
+            tk.Label(self.root, text="Pôster indisponível.").pack(pady=10)
+
         tk.Label(self.root, text="Por quantos dias deseja alugar?").pack(pady=5)
         dias_entry = tk.Entry(self.root)
         dias_entry.pack(pady=5)
@@ -138,7 +159,7 @@ class App:
                 if dias <= 0:
                     messagebox.showerror("Erro", "O número de dias deve ser maior que 0.")
                     return
-                
+
                 total = dias * filme['PricePerDay']
                 aluguel = {
                     "filme": filme['Title'],
@@ -154,8 +175,6 @@ class App:
 
         tk.Button(self.root, text="Finalizar Aluguel", command=finalizar).pack(pady=10)
         tk.Button(self.root, text="Voltar", command=lambda: self.tela_autenticado(username)).pack(pady=20)
-
-
         
 
     def visualizar_alugueis(self, username):
@@ -164,13 +183,36 @@ class App:
         alugueis = self.rent_storage.load_rents(username)
 
         if not alugueis:
-            tk.Label(self.root, text="Você ainda não fez nenhum aluguel.").pack(pady=20)
+            tk.Label(self.root, text="Você não fez nenhum aluguel.").pack(pady=20)
         else:
-            tk.Label(self.root, text="Seus Aluguéis:").pack(pady=20)
-            for aluguel in alugueis:
-                tk.Label(self.root, text=f"Filme: {aluguel['filme']} | Data: {aluguel['data']} | Dias: {aluguel['dias']} | Total: R${aluguel['total']:.2f}").pack(pady=5)
+            tk.Label(self.root, text="Seus Aluguéis: (Clique para devolver)").pack(pady=20)
+            
+            for index, aluguel in enumerate(alugueis):
+                tk.Button(
+                    self.root,
+                    text=f"Filme: {aluguel['filme']} | Data: {aluguel['data']} | Dias: {aluguel['dias']} | Total: R${aluguel['total']:.2f}",
+                    command=lambda idx=index: self.devolver_aluguel(username, idx)
+                ).pack(pady=5)
 
         tk.Button(self.root, text="Voltar", command=lambda: self.tela_autenticado(username)).pack(pady=20)
+
+    def devolver_aluguel(self, username, index):
+        alugueis = self.rent_storage.load_rents(username)
+
+        if index < 0 or index >= len(alugueis):
+            messagebox.showerror("Erro", "Índice de aluguel inválido.")
+            return
+
+        aluguel = alugueis.pop(index)
+        self.rent_storage.save_all_rents(username, alugueis)
+
+        messagebox.showinfo(
+            "Devolução Concluída", 
+            f"Você devolveu o filme: {aluguel['filme']}."
+        )
+
+        self.visualizar_alugueis(username)
+
 
 
     def tela_inicial(self):

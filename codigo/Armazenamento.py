@@ -22,20 +22,33 @@ class LoginStorage(Storage):
     def load_logins(self):
         return self.load_data(self.auth_file) or {}
     
-class RentStorage(Storage):
-    def __init__(self):
-        self.rent_file = "alugueis.json"
+class RentStorage:
+    def load_rents(self, username):
+        data = self.load_all_data()
+        return data.get(username, [])
 
-    
-    def save_rent(self, user, rent_info):
-        all_rents = self.load_data(self.rent_file) or {}
-        if user not in all_rents:
-            all_rents[user] = []
-        all_rents[user].append(rent_info)
-        self.save_data(self.rent_file, all_rents)
+    def save_rent(self, username, rent):
+        data = self.load_all_data()
+        if username not in data:
+            data[username] = []
+        data[username].append(rent)
+        self.save_all_data(data)
 
-    def load_rents(self, user):
-        all_rents = self.load_data(self.rent_file) or {}
-        return all_rents.get(user, [])
+    def save_all_rents(self, username, rents):
+        data = self.load_all_data()
+        data[username] = rents
+        self.save_all_data(data)
+
+    def load_all_data(self):
+        try:
+            with open('rents_data.json', 'r') as file:
+                return json.load(file)
+        except FileNotFoundError:
+            return {}
+
+    def save_all_data(self, data):
+        with open('rents_data.json', 'w') as file:
+            json.dump(data, file, indent=4)
+
 
 
